@@ -1,0 +1,46 @@
+flowchart LR
+  subgraph CL["Người dùng"]
+    U1["Trình duyệt:<br/>phụ huynh và bé"]
+    U2["Trình duyệt: Admin"]
+  end
+  FE1["Frontend web<br/>Wix nhúng hoặc Vercel<br/>(chờ chốt)"]
+  subgraph BE["Backend API"]
+    A1["Auth: đăng ký, OTP, đăng nhập"]
+    A2["Điểm và Hạng Cúp"]
+    A3["Nhiệm vụ và tô tranh"]
+    A4["Bài nộp ảnh/video"]
+    A5["Ưu đãi và voucher"]
+    A6["Thông báo"]
+    A7["Admin: duyệt, báo cáo"]
+  end
+  subgraph DATA["Lưu trữ"]
+    DB[("Aiven PostgreSQL<br/>tài khoản, điểm, bài nộp")]
+    OS[("Kho ảnh/video<br/>object storage, riêng tư")]
+  end
+  subgraph JOB["Tác vụ nền"]
+    W1["Tự kiểm tra bài nộp"]
+    W2["Xét hạng, hết hạn điểm,<br/>nhắc thông báo"]
+    W3["Dọn file cũ"]
+  end
+  subgraph EXT["Dịch vụ ngoài"]
+    X1["SMS gửi OTP"]
+    X2["Nguồn đơn hàng<br/>Google Form, Wix hoặc POS"]
+    X3["AI kiểm tra nội dung"]
+  end
+  U1 --> FE1
+  U2 --> FE1
+  FE1 -->|"HTTPS + phiên đăng nhập"| BE
+  BE --> DB
+  U1 -.->|"tải file trực tiếp bằng signed URL"| OS
+  A4 -.-> OS
+  A1 --> X1
+  X2 -->|"đồng bộ đơn hàng hoàn tất"| A2
+  W1 --> OS
+  W1 --> X3
+  W1 --> DB
+  W2 --> DB
+  W3 --> OS
+  classDef pending stroke-dasharray: 5 5,stroke:#E0457B,fill:#FFF0F5
+  classDef store fill:#E3F4F1,stroke:#12806D
+  class FE1,X1,X2,X3 pending
+  class DB,OS store

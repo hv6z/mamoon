@@ -1,0 +1,40 @@
+sequenceDiagram
+  autonumber
+  actor B as Bé và phụ huynh
+  participant FE as Frontend
+  participant API as Backend API
+  participant DB as Aiven PostgreSQL
+  participant OS as Kho ảnh/video
+  participant W as Tác vụ tự kiểm tra
+  actor AD as Admin
+  B->>FE: Chọn ảnh hoặc video
+  FE->>FE: Kiểm tra định dạng, dung lượng
+  FE->>API: POST /submissions (nhiệm vụ, loại file, dung lượng)
+  API->>DB: Kiểm tra đăng nhập, phụ huynh đã đồng ý, giới hạn nộp trong ngày
+  alt Không hợp lệ
+    API-->>FE: 4xx kèm lý do
+  else Hợp lệ
+    API->>DB: Tạo submission, trạng thái uploading
+    API-->>FE: signed URL tải lên, hết hạn ngắn
+    FE->>OS: PUT file qua signed URL
+    FE->>API: POST /submissions/:id/complete
+    API->>DB: Đổi trạng thái thành checking
+    API->>W: Đưa vào hàng đợi kiểm tra
+  end
+  W->>OS: Đọc file, tính hash chống trùng
+  W->>W: Kiểm tra phù hợp, đúng chủ đề
+  W->>DB: Lưu kết quả tự kiểm tra
+  alt Đạt
+    W->>API: Tự động duyệt
+    API->>DB: Ghi point_ledger (idempotency key), trạng thái approved
+    API-->>B: Thông báo nhận X điểm
+  else Không chắc
+    W->>DB: Trạng thái pending_review
+    AD->>API: Mở hàng chờ, xem file
+    AD->>API: POST /admin/submissions/:id/review (duyệt hoặc từ chối kèm lý do)
+    API->>DB: Lưu review, cập nhật trạng thái, ghi điểm nếu duyệt
+    API-->>B: Thông báo kết quả duyệt
+  else Không đạt
+    W->>DB: Trạng thái rejected kèm lý do
+    API-->>B: Thông báo từ chối, cho nộp lại
+  end

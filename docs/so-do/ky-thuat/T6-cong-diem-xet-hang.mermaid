@@ -1,0 +1,19 @@
+flowchart TD
+  E1(["Đơn hàng hoàn tất"]) --> P1
+  E2(["Hoàn thành tranh trên web"]) --> P1
+  E3(["Bài nộp ảnh/video được duyệt"]) --> P1
+  E4(["Admin điều chỉnh điểm"]) --> P1
+  P1{"Idempotency key<br/>đã có?"}
+  P1 -->|Có| P2["Bỏ qua, trả kết quả cũ"]
+  P1 -->|Chưa| P3["Ghi point_ledger:<br/>delta, source, hạn dùng"]
+  P3 --> P8["Tạo thông báo nhận điểm"]
+  P3 --> P4["Tính lại điểm xét hạng<br/>trong chu kỳ"]
+  P4 --> P5{"Vượt ngưỡng<br/>hạng tiếp theo?"}
+  P5 -->|Có| P6["Cập nhật tier<br/>và thông báo lên hạng"]
+  P5 -->|Không| P7["Giữ nguyên hạng"]
+  C1(["Tác vụ nền mỗi đêm"]) --> C2["Tìm điểm và voucher quá hạn"]
+  C2 --> C3["Ghi ledger âm loại expire<br/>đổi voucher sang expired"]
+  C3 --> P4
+  C1 --> C4["Nhắc điểm và voucher sắp hết hạn"]
+  classDef ev fill:#BFEFE6,stroke:#1E9E8C
+  class E1,E2,E3,E4,C1 ev

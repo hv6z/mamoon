@@ -1,0 +1,23 @@
+flowchart LR
+  TC["1. Truy cập"] --> HUB(["TỔNG QUAN ĐIỂM"])
+  LOP["2. Buổi học tại lớp:<br/>check-in, tô tranh,<br/>chấm điểm, chụp ảnh"] ==>|cộng điểm| HUB
+  LOP ==>|lưu ảnh tranh| M2
+  HUB --> M2["3. Bộ sưu tập tranh<br/>của bé"]
+  HUB --> M3["4. Lịch sử điểm"]
+  HUB --> M4["5. Đổi ưu đãi<br/>và voucher"]
+  HUB --> M5["6. Quy tắc, Hạng Cup<br/>và thông báo"]
+  HUB --> M8["8. Bảng xếp hạng<br/>Top 10 (MỚI)"]
+  AD["7. Admin (cô giáo)"] -->|check-in, chấm, chụp ảnh| LOP
+  AD -.->|xem toàn bộ thông tin các bé| M3
+  AD -.->|quản lý ưu đãi| M4
+  classDef hub fill:#BFEFE6,stroke:#1E9E8C,stroke-width:2px,color:#1b3a36
+  classDef lop fill:#FFF1C2,stroke:#D99A00,color:#4a3500
+  classDef newf fill:#FFD9E4,stroke:#E0457B,color:#4a1a2b
+  classDef admin fill:#EEE9E0,stroke:#8C7A66,color:#3b2e22
+  classDef cho fill:#F1ECFF,stroke:#8B7BD8,stroke-dasharray:5 4,color:#2F2A6B
+  classDef top fill:#FFE08A,stroke:#C98A00,stroke-width:2px,color:#4a3500
+  classDef rest fill:#E3F0FF,stroke:#5B8BD9,color:#1d3557
+  class HUB hub
+  class LOP lop
+  class M2,M8 newf
+  class AD admin

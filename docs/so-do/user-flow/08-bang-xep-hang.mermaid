@@ -1,0 +1,23 @@
+flowchart TD
+  HUB(["TỔNG QUAN ĐIỂM"]) --> X1["Bấm Xem bảng xếp hạng"]
+  X1 --> X2["Bảng xếp hạng Top 10<br/>theo điểm trong kỳ"]
+  X2 -.-> CK["Kỳ xếp hạng (tháng / quý)<br/>và cách tính điểm: chờ chốt"]
+  X2 --> X3["Hạng 1, 2, 3: bục vinh danh<br/>màu vàng, bạc, đồng"]
+  X2 --> X4["Hạng 4 đến 10: danh sách<br/>một màu chung"]
+  X2 --> X5["Vị trí của bé mình<br/>(kể cả khi ngoài Top 10)"]
+  X3 --> X6["Bấm vào một bạn trong Top"]
+  X4 --> X6
+  X6 --> X8["Xem tranh của bạn đó:<br/>ảnh, chủ đề, ngày"]
+  X8 --> X10["Quay lại bảng xếp hạng"]
+  classDef hub fill:#BFEFE6,stroke:#1E9E8C,stroke-width:2px,color:#1b3a36
+  classDef lop fill:#FFF1C2,stroke:#D99A00,color:#4a3500
+  classDef newf fill:#FFD9E4,stroke:#E0457B,color:#4a1a2b
+  classDef admin fill:#EEE9E0,stroke:#8C7A66,color:#3b2e22
+  classDef cho fill:#F1ECFF,stroke:#8B7BD8,stroke-dasharray:5 4,color:#2F2A6B
+  classDef top fill:#FFE08A,stroke:#C98A00,stroke-width:2px,color:#4a3500
+  classDef rest fill:#E3F0FF,stroke:#5B8BD9,color:#1d3557
+  class HUB hub
+  class X1,X2,X5,X6,X8,X10 newf
+  class X3 top
+  class X4 rest
+  class CK cho

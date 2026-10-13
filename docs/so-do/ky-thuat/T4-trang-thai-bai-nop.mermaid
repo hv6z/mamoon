@@ -1,0 +1,21 @@
+stateDiagram-v2
+  state "Đang tải lên" as uploading
+  state "Đang tự kiểm tra" as checking
+  state "Chờ Admin duyệt" as pending_review
+  state "Đã duyệt, đã cộng điểm" as approved
+  state "Bị từ chối" as rejected
+  state "Bị thu hồi" as revoked
+  state "Tải lên lỗi" as failed
+  [*] --> uploading
+  uploading --> failed: Tải lỗi hoặc hết hạn signed URL
+  uploading --> checking: Tải xong
+  checking --> approved: Đạt, tự động duyệt
+  checking --> pending_review: Không chắc
+  checking --> rejected: Không đạt
+  pending_review --> approved: Admin duyệt
+  pending_review --> rejected: Admin từ chối
+  approved --> revoked: Hậu kiểm phát hiện vi phạm, trừ lại điểm
+  failed --> [*]
+  rejected --> [*]
+  approved --> [*]
+  revoked --> [*]

@@ -1,0 +1,158 @@
+erDiagram
+  accounts ||--o{ profiles : "có"
+  tiers ||--o{ profiles : "hạng hiện tại"
+  profiles ||--o{ point_ledger : "sổ điểm"
+  profiles ||--o{ submissions : "nộp bài"
+  profiles ||--o{ painting_completions : "tô tranh"
+  profiles ||--o{ vouchers : "sở hữu"
+  profiles ||--o{ notifications : "nhận"
+  paintings ||--o{ painting_completions : "được tô"
+  submissions ||--|{ submission_media : "gồm file"
+  submissions ||--o{ auto_checks : "tự kiểm tra"
+  submissions ||--o{ reviews : "được duyệt"
+  admins ||--o{ reviews : "thực hiện"
+  rewards ||--o{ vouchers : "tạo ra"
+  tiers ||--o{ rewards : "yêu cầu hạng"
+  tasks ||--o{ submissions : "thuộc nhiệm vụ"
+  orders ||--o| point_ledger : "sinh điểm"
+
+  accounts {
+    uuid id PK
+    string phone UK "SĐT phụ huynh"
+    string password_hash "băm, không lưu chữ thường"
+    datetime parent_consent_at "phụ huynh đồng ý quyền riêng tư"
+    string status
+    datetime created_at
+  }
+  profiles {
+    uuid id PK
+    uuid account_id FK
+    string display_name "tên bé"
+    uuid tier_id FK
+    int streak_days "chuỗi hoạt động"
+    datetime created_at
+  }
+  otp_codes {
+    uuid id PK
+    string phone
+    string code_hash
+    datetime expires_at
+    int attempts
+    datetime used_at
+  }
+  tiers {
+    uuid id PK
+    string code "bronze, silver, gold, diamond"
+    string name "Cúp Đồng, Bạc, Vàng, Kim Cương"
+    int min_points "ngưỡng, chờ chốt"
+  }
+  point_ledger {
+    uuid id PK
+    uuid profile_id FK
+    int delta "dương là cộng, âm là trừ"
+    string source_type "order, painting, submission, redeem, adjust, expire, revoke"
+    uuid source_id
+    string idempotency_key UK "chống cộng trùng"
+    datetime expires_at "hạn dùng điểm"
+    uuid created_by_admin FK "khi điều chỉnh tay"
+    datetime created_at
+  }
+  tasks {
+    uuid id PK
+    string type "paint, upload, order"
+    string title
+    int points
+    uuid min_tier_id FK
+    boolean active
+    datetime starts_at
+    datetime ends_at
+  }
+  paintings {
+    uuid id PK
+    string title
+    string image_url
+    int points
+    uuid min_tier_id FK "tranh khoá theo hạng"
+  }
+  painting_completions {
+    uuid id PK
+    uuid profile_id FK
+    uuid painting_id FK
+    uuid ledger_id FK
+    datetime completed_at
+  }
+  submissions {
+    uuid id PK
+    uuid profile_id FK
+    uuid task_id FK
+    string status "uploading, checking, pending_review, approved, rejected, revoked, failed"
+    string reject_reason
+    uuid ledger_id FK
+    datetime created_at
+  }
+  submission_media {
+    uuid id PK
+    uuid submission_id FK
+    string storage_key "đường dẫn trong kho riêng tư"
+    string mime_type
+    int size_bytes
+    int duration_sec "video"
+    string sha256 "chống nộp trùng"
+  }
+  auto_checks {
+    uuid id PK
+    uuid submission_id FK
+    string verdict "pass, unsure, fail"
+    float score
+    json reasons
+    datetime checked_at
+  }
+  reviews {
+    uuid id PK
+    uuid submission_id FK
+    uuid admin_id FK
+    string decision "approve, reject, revoke"
+    string reason
+    datetime reviewed_at
+  }
+  admins {
+    uuid id PK
+    string email UK
+    string password_hash
+    string role
+  }
+  rewards {
+    uuid id PK
+    string name
+    int cost_points
+    uuid min_tier_id FK
+    int stock
+    int valid_days
+    boolean active
+  }
+  vouchers {
+    uuid id PK
+    uuid profile_id FK
+    uuid reward_id FK
+    uuid ledger_id FK
+    string code UK "mã hoặc QR"
+    string status "unused, used, expired"
+    datetime expires_at
+    datetime used_at
+  }
+  orders {
+    uuid id PK
+    string external_ref UK "mã đơn từ nguồn bán hàng"
+    uuid profile_id FK
+    int amount_vnd
+    int points_awarded
+    datetime ordered_at
+  }
+  notifications {
+    uuid id PK
+    uuid profile_id FK
+    string type "points, tier_up, review, expiring"
+    json payload
+    datetime read_at
+    datetime created_at
+  }

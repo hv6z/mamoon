@@ -1,0 +1,12 @@
+flowchart TD
+  A1(["Khách truy cập MaMoon"]) --> A2{"Đã có tài khoản?"}
+  A2 -->|Chưa| A3["Đăng ký: tên bé + SĐT phụ huynh"]
+  A3 --> A3b["Đồng ý điều khoản: MaMoon chụp,<br/>lưu và hiển thị tranh của bé"]
+  A3b --> A4["Xác thực OTP"]
+  A2 -->|Rồi| A5["Đăng nhập"]
+  A5 -->|Sai thông tin| A6["Báo lỗi / Quên mật khẩu"]
+  A6 --> A5
+  A4 --> HUB(["TỔNG QUAN ĐIỂM"])
+  A5 -->|Đúng| HUB
+  classDef hub fill:#BFEFE6,stroke:#1E9E8C,stroke-width:2px,color:#1b3a36
+  class HUB hub

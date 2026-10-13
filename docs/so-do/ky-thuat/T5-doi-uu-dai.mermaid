@@ -1,0 +1,22 @@
+sequenceDiagram
+  autonumber
+  actor B as Phụ huynh hoặc bé
+  participant FE as Frontend
+  participant API as Backend API
+  participant DB as Aiven PostgreSQL
+  B->>FE: Bấm Đổi ngay
+  FE->>API: POST /rewards/:id/redeem (kèm idempotency key)
+  API->>DB: BEGIN
+  API->>DB: Khoá dòng profile, đọc số dư và hạng
+  API->>DB: Kiểm tra đủ điểm, đủ hạng, còn quà
+  alt Không đủ điều kiện
+    API->>DB: ROLLBACK
+    API-->>FE: 422 Chưa đủ điểm hoặc hạng
+    FE-->>B: Thông báo chưa đủ điểm
+  else Đủ điều kiện
+    API->>DB: Ghi point_ledger âm, tạo voucher, giảm tồn kho
+    API->>DB: COMMIT
+    API-->>FE: 201 Voucher (mã hoặc QR)
+    FE-->>B: Đổi thành công, vào Voucher của tôi
+  end
+  Note over B,DB: Dùng voucher tại quầy: đổi trạng thái unused sang used. Cách xác nhận (mã, QR, nhân viên quét) chờ chốt

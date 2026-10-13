@@ -1,0 +1,19 @@
+flowchart TD
+  ORD(["Đơn hàng mua tại MaMoon hoàn tất"]) --> SYNC["Đồng bộ đơn hàng, cộng điểm"]
+  LOP(["Buổi học tại lớp đã chấm"]) --> LOG
+  SYNC --> LOG["Ghi vào lịch sử điểm"]
+  HUB(["TỔNG QUAN ĐIỂM"]) --> D1["Lịch sử điểm"]
+  D1 --> D2["Danh sách biến động điểm"]
+  D2 --> D3["Chọn một mục: Chi tiết nguồn điểm"]
+  D3 --> D4{"Loại nguồn"}
+  D4 --> A["A: Đơn hàng"]
+  D4 --> B["B: Buổi học tại lớp:<br/>check-in, điểm chấm, ảnh tranh"]
+  D4 --> C["C: Admin điều chỉnh, kèm lý do"]
+  D4 --> D["D: Đổi ưu đãi (trừ điểm)<br/>hoặc điểm hết hạn"]
+  classDef hub fill:#BFEFE6,stroke:#1E9E8C,stroke-width:2px,color:#1b3a36
+  classDef lop fill:#FFF1C2,stroke:#D99A00,color:#4a3500
+  classDef newf fill:#FFD9E4,stroke:#E0457B,color:#4a1a2b
+  classDef admin fill:#EEE9E0,stroke:#8C7A66,color:#3b2e22
+  classDef cho fill:#F1ECFF,stroke:#8B7BD8,stroke-dasharray:5 4,color:#2F2A6B
+  class HUB hub
+  class LOP,B lop

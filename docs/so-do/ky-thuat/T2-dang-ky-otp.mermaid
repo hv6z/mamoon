@@ -1,0 +1,28 @@
+sequenceDiagram
+  autonumber
+  actor P as Phụ huynh
+  participant FE as Frontend
+  participant API as Backend API
+  participant DB as Aiven PostgreSQL
+  participant SMS as Dịch vụ SMS
+  P->>FE: Nhập tên bé, SĐT phụ huynh, mật khẩu
+  FE->>API: POST /auth/register
+  API->>DB: Kiểm tra SĐT đã tồn tại chưa
+  alt SĐT đã có tài khoản
+    API-->>FE: 409 Báo đã có tài khoản
+  else Chưa có
+    API->>DB: Tạo account (mật khẩu băm) và profile của bé
+    API->>DB: Tạo mã OTP (băm, có hạn, giới hạn số lần thử)
+    API->>SMS: Gửi mã OTP
+    API-->>FE: 201 Chờ xác thực OTP
+  end
+  P->>FE: Nhập mã OTP
+  FE->>API: POST /auth/verify-otp
+  API->>DB: Kiểm tra mã, hạn dùng, số lần thử
+  alt Đúng
+    API-->>FE: 200 kèm phiên đăng nhập (cookie HttpOnly)
+    FE-->>P: Vào Tổng quan điểm
+  else Sai hoặc hết hạn
+    API-->>FE: 400 Cho thử lại hoặc gửi lại mã
+  end
+  Note over P,API: Đăng nhập lại: POST /auth/login. Sai thông tin thì báo lỗi và cho Quên mật khẩu (cũng qua OTP)

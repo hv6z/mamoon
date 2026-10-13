@@ -1,0 +1,35 @@
+flowchart TD
+  S(["Bé đến lớp MaMoon"]) --> L1["Admin mở buổi học hôm nay"]
+  L1 -.->|mất mạng / web lỗi / quên| BU(["Không check-in được tại lớp:<br/>xem sơ đồ 2b"])
+  L1 --> L2["Tìm bé: quét mã QR của bé<br/>hoặc nhập SĐT phụ huynh"]
+  L2 --> L3{"Bé đã có tài khoản?"}
+  L3 -->|Chưa| L4["Tạo nhanh tài khoản tại lớp:<br/>tên bé + SĐT phụ huynh, xác thực OTP"]
+  L4 --> L5
+  L3 -->|Rồi| L5{"Đã check-in<br/>buổi này chưa?"}
+  L5 -->|Rồi| L5x["Báo đã check-in, không cộng trùng"]
+  L5 -->|Chưa| L6(["Check-in thành công"])
+  L6 -.-> CC["Điểm chuyên cần khi check-in:<br/>chờ chốt"]
+  L6 --> L7["Bé tô tranh tại lớp"]
+  L7 --> L8["Admin chấm tranh<br/>theo tiêu chí + ghi nhận xét"]
+  L8 --> L9["Quy đổi điểm chấm ra điểm thưởng"]
+  L9 -.-> QD["Bảng quy đổi điểm chấm:<br/>chờ chốt"]
+  L9 --> PT(["Cộng điểm vào tài khoản bé<br/>+ ghi lịch sử điểm"])
+  PT --> P1["Admin chụp ảnh tranh"]
+  P1 --> P4["Tải ảnh lên, gắn với buổi học"]
+  P4 --> P5{"Tải lên thành công?"}
+  P5 -->|Không| P6["Lưu tạm trên máy, tự gửi lại"]
+  P6 --> P4
+  P5 -->|Có| P7(["Lưu vào Bộ sưu tập tranh của bé"])
+  P7 --> N1["Thông báo phụ huynh:<br/>điểm buổi học + ảnh tranh mới"]
+  PT --> T1{"Đủ điểm lên hạng?"}
+  T1 -->|Có| T2["Thông báo lên hạng Cup"]
+  classDef hub fill:#BFEFE6,stroke:#1E9E8C,stroke-width:2px,color:#1b3a36
+  classDef lop fill:#FFF1C2,stroke:#D99A00,color:#4a3500
+  classDef newf fill:#FFD9E4,stroke:#E0457B,color:#4a1a2b
+  classDef admin fill:#EEE9E0,stroke:#8C7A66,color:#3b2e22
+  classDef cho fill:#F1ECFF,stroke:#8B7BD8,stroke-dasharray:5 4,color:#2F2A6B
+  class S,L1,L2,L3,L4,L5,L5x,L7,L8,L9,P1,P4,P5,P6 lop
+  class L6,PT,P7 hub
+  class N1,T1,T2 newf
+  class CC,QD cho
+  class BU newf

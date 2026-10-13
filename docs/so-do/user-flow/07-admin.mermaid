@@ -1,0 +1,16 @@
+flowchart LR
+  H0(["Admin (cô giáo)<br/>đăng nhập"]) --> H1["Tổng quan: học viên,<br/>buổi học hôm nay,<br/>điểm đã phát"]
+  H1 --> B["<b>Buổi học hôm nay</b><br/>check-in bé · chấm điểm + nhận xét<br/>chụp và tải ảnh tranh<br/>bé chưa chấm / chưa có ảnh<br/>check-in bù có minh chứng"]
+  H1 --> P["<b>Hồ sơ tất cả các bé</b><br/>thông tin bé + phụ huynh<br/>điểm, hạng Cup, lịch sử điểm<br/>bộ sưu tập tranh, chuyên cần<br/>voucher đã đổi<br/>sửa điểm kèm lý do"]
+  H1 --> X["<b>Bảng xếp hạng</b><br/>xem Top 10, ẩn tranh khi cần"]
+  H1 --> K["<b>Lớp và lịch học</b><br/>tiêu chí chấm, bảng quy đổi điểm"]
+  H1 --> YC["<b>Yêu cầu kiểm tra lại</b><br/>từ phụ huynh"]
+  H1 --> N["<b>Ưu đãi</b><br/>tạo, sửa, ẩn"]
+  H1 --> R["<b>Báo cáo</b><br/>chuyên cần, ưu đãi phổ biến"]
+  H1 --> TK["<b>Tài khoản Admin</b>"]
+  classDef lop fill:#FFF1C2,stroke:#D99A00,color:#4a3500
+  classDef newf fill:#FFD9E4,stroke:#E0457B,color:#4a1a2b
+  classDef admin fill:#EEE9E0,stroke:#8C7A66,color:#3b2e22
+  class B lop
+  class X newf
+  class H0,H1,P,K,YC,N,R,TK admin

@@ -1,0 +1,28 @@
+{
+  "name": "mamoon-rewards",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:single": "vite build --mode single",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router-dom": "6.26.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.3.1",
+    "vite": "5.4.8",
+    "vite-plugin-singlefile": "2.0.2",
+    "vitest": "2.1.2"
+  },
+  "description": "Web tích điểm MaMoon cho phụ huynh và Admin (React + Vite)",
+  "engines": {
+    "node": ">=20"
+  }
+}

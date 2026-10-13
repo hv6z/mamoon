@@ -1,0 +1,40 @@
+flowchart TD
+  S(["Không check-in được tại lớp"]) --> R{"Nguyên nhân"}
+  R -->|Mất mạng| O1["Web vẫn cho check-in và chấm,<br/>lưu tạm trên máy"]
+  O1 --> O2["Có mạng lại: tự gửi lên"]
+  O2 --> O3{"Đã có check-in<br/>buổi này chưa?"}
+  O3 -->|Rồi| O4["Giữ một bản, không cộng trùng"]
+  O3 -->|Chưa| OK
+  R -->|Web / máy lỗi hẳn| G1["Cô ghi tờ điểm danh giấy:<br/>tên bé, có mặt, điểm chấm, chữ ký"]
+  G1 --> G2["Chụp tờ điểm danh + chụp tranh của bé"]
+  G2 --> B1
+  R -->|Quên check-in| B1["Admin mở buổi học đã qua,<br/>bấm Check-in bù cho bé"]
+  B1 --> B2{"Trong 48 giờ<br/>sau buổi học?"}
+  B2 -->|Không| B3["Không check-in bù được:<br/>sửa điểm thủ công kèm lý do"]
+  B2 -->|Có| B4["Đính kèm minh chứng (bắt buộc):<br/>ảnh tranh của bé HOẶC ảnh tờ điểm danh"]
+  B4 --> B5{"Có ảnh minh chứng?"}
+  B5 -->|Không| B6["Không cho lưu"]
+  B6 --> B4
+  B5 -->|Có| B7["Chọn lý do:<br/>mất mạng / web lỗi / quên"]
+  B7 --> B8["Hệ thống tự ghi: người làm,<br/>giờ làm, buổi học được bù"]
+  B8 -.-> DA["Có từ 2 Admin: Admin thứ hai duyệt<br/>trước khi cộng điểm (chờ chốt)"]
+  B8 --> OK(["Check-in + cộng điểm,<br/>nhãn BỔ SUNG, tính vào ngày buổi học"])
+  OK --> N1["Thông báo phụ huynh:<br/>bé được check-in bù buổi DD/MM"]
+  N1 --> N2{"Phụ huynh phản hồi"}
+  N2 -->|Xác nhận / không phản hồi| N3["Giữ nguyên"]
+  N2 -->|Báo sai| N4["Gửi yêu cầu kiểm tra lại<br/>cho Admin (sơ đồ 3)"]
+  N4 --> N5{"Admin xem minh chứng"}
+  N5 -->|Đúng| N3
+  N5 -->|Sai| N6["Huỷ check-in, thu hồi điểm,<br/>ghi lý do"]
+  classDef hub fill:#BFEFE6,stroke:#1E9E8C,stroke-width:2px,color:#1b3a36
+  classDef lop fill:#FFF1C2,stroke:#D99A00,color:#4a3500
+  classDef newf fill:#FFD9E4,stroke:#E0457B,color:#4a1a2b
+  classDef admin fill:#EEE9E0,stroke:#8C7A66,color:#3b2e22
+  classDef cho fill:#F1ECFF,stroke:#8B7BD8,stroke-dasharray:5 4,color:#2F2A6B
+  classDef proof fill:#FFE08A,stroke:#C98A00,stroke-width:2px,color:#4a3500
+  class S,R,O1,O2,O3,O4,G1,G2 lop
+  class B1,B2,B3,B5,B6,B7,B8,N5,N6 admin
+  class B4 proof
+  class OK hub
+  class N1,N2,N3,N4 newf
+  class DA cho

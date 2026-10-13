@@ -1,0 +1,22 @@
+flowchart TD
+  HUB(["TỔNG QUAN ĐIỂM"]) --> G1["Bộ sưu tập tranh của bé"]
+  G1 --> G2["Danh sách tranh theo buổi học:<br/>ảnh, ngày, lớp"]
+  G2 --> G3{"Lọc"}
+  G3 --> G3a["Theo tháng"]
+  G3 --> G3b["Theo chủ đề tranh"]
+  G2 --> G4["Chi tiết một bức tranh"]
+  G4 --> G5["Điểm chấm, nhận xét của cô,<br/>điểm thưởng đã cộng"]
+  G4 --> G6["Tải ảnh về máy"]
+  G4 --> G7{"Thông tin sai?"}
+  G7 -->|Có| G8["Gửi yêu cầu kiểm tra lại"]
+  G8 --> G9["Admin xem và sửa điểm<br/>kèm lý do"]
+  G9 --> G10["Thông báo kết quả cho phụ huynh"]
+  G1 -.-> G11["Chưa có tranh: hướng dẫn<br/>đến lớp để bắt đầu sưu tập"]
+  classDef hub fill:#BFEFE6,stroke:#1E9E8C,stroke-width:2px,color:#1b3a36
+  classDef lop fill:#FFF1C2,stroke:#D99A00,color:#4a3500
+  classDef newf fill:#FFD9E4,stroke:#E0457B,color:#4a1a2b
+  classDef admin fill:#EEE9E0,stroke:#8C7A66,color:#3b2e22
+  classDef cho fill:#F1ECFF,stroke:#8B7BD8,stroke-dasharray:5 4,color:#2F2A6B
+  class HUB hub
+  class G1,G2,G3,G3a,G3b,G4,G5,G6,G7,G8,G10,G11 newf
+  class G9 admin

@@ -1,0 +1,15 @@
+flowchart TD
+  HUB(["TỔNG QUAN ĐIỂM"]) --> E1["Danh sách ưu đãi"]
+  E1 --> E2["Chi tiết ưu đãi"]
+  E2 --> E3{"Đủ điểm và đủ hạng?"}
+  E3 -->|Không| E4["Thông báo chưa đủ điểm / hạng"]
+  E4 --> E1
+  E3 -->|Có| E5["Xác nhận đổi"]
+  E5 --> E6["Đổi thành công, trừ điểm"]
+  E6 --> E7["Voucher của tôi"]
+  E7 --> E8{"Trạng thái voucher"}
+  E8 -->|Chưa dùng| E9["Dùng voucher: mã / QR"]
+  E8 -->|Đã dùng| E10["Lưu vào lịch sử"]
+  E8 -->|Hết hạn| E11["Hiển thị hết hạn"]
+  classDef hub fill:#BFEFE6,stroke:#1E9E8C,stroke-width:2px,color:#1b3a36
+  class HUB hub
