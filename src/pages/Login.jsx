@@ -4,6 +4,7 @@ import * as api from '../services/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Duck } from '../components/Icons.jsx';
 import { useToast } from '../components/ui.jsx';
+import { DEMO_MODE } from '../config/env.js';
 
 export default function Login() {
   const [tab, setTab] = useState('parent');
@@ -26,7 +27,7 @@ export default function Login() {
           {tab === 'register' && <Register />}
           {tab === 'admin' && <AdminLogin />}
         </div>
-        <DemoHelp />
+        {DEMO_MODE && <DemoHelp />}
       </div>
     </div>
   );
@@ -39,7 +40,7 @@ function OtpStep({ phone, onBack, onSubmit, submitLabel }) {
       <p>Mã OTP đã gửi tới <b>{phone}</b>.</p>
       <label className="field">Mã OTP
         <input className="input" inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} required autoFocus />
-        <span className="hint">Bản demo: mã luôn là 123456</span>
+        {DEMO_MODE && <span className="hint">Bản demo: mã luôn là 123456</span>}
       </label>
       <button className="btn primary block" type="submit" disabled={code.length !== 6}>{submitLabel}</button>
       <button className="btn ghost" type="button" onClick={onBack}>Đổi số điện thoại</button>

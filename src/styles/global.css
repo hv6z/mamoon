@@ -342,3 +342,6 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .podium .block .btn { min-height: 36px; padding: 0 10px; font-size: 13px; max-width: 100%; }
   .podium .rank-label { display: none; }
 }
+
+/* Dải báo bản demo (chỉ hiện khi VITE_DEMO_MODE khác "false") */
+.demo-strip { background: var(--mm-yellow); color: var(--mm-black); text-align: center; font-weight: 800; font-size: 13px; padding: 6px 12px; }

@@ -27,6 +27,18 @@ Tài khoản dùng thử (dữ liệu giả):
 
 Màn đăng nhập có nút **Đặt lại dữ liệu demo**.
 
+## Chế độ demo
+
+Biến môi trường `VITE_DEMO_MODE` (xem `.env.example`, cấu hình trong `src/config/env.js`):
+
+| Giá trị | Kết quả |
+|---|---|
+| không đặt / `true` | Bản demo: hiện dải "Bản demo" và khung "Tài khoản dùng thử" ở màn đăng nhập |
+| `false` | Bản chạy thật: ẩn toàn bộ phần chỉ dành cho demo |
+
+Trên Vercel: **Settings → Environment Variables** → thêm `VITE_DEMO_MODE` = `false` → **Redeploy**.
+Lưu ý: tắt chế độ demo chỉ ẩn phần hiển thị. Đăng nhập vẫn dùng dữ liệu mẫu cho tới khi `src/services/api.js` được nối với backend.
+
 ## Cấu trúc thư mục
 
 ```
@@ -36,6 +48,7 @@ Màn đăng nhập có nút **Đặt lại dữ liệu demo**.
 ├── vite.config.js             Cấu hình build (thường / 1 file)
 ├── src/
 │   ├── main.jsx, App.jsx      Khởi động app, định tuyến (HashRouter)
+│   ├── config/env.js          Bật/tắt chế độ demo (VITE_DEMO_MODE)
 │   ├── config/rules.js        Quy tắc nghiệp vụ: hạng Cup, quy đổi điểm, hạn 48 giờ… (giá trị CHỜ CHỐT)
 │   ├── data/seed.js           Dữ liệu mẫu (16 bé, 2 lớp, 6 tuần buổi học)
 │   ├── services/

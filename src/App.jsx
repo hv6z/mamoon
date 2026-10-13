@@ -1,6 +1,7 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 import { ToastProvider } from './components/ui.jsx';
+import { DEMO_MODE } from './config/env.js';
 import Login from './pages/Login.jsx';
 import UserLayout from './pages/user/UserLayout.jsx';
 import Overview from './pages/user/Overview.jsx';
@@ -37,6 +38,7 @@ export default function App() {
   return (
     <AuthProvider>
       <ToastProvider>
+        {DEMO_MODE && <div className="demo-strip" role="note">Bản demo · dữ liệu mẫu, chỉ lưu trên trình duyệt này</div>}
         <HashRouter>
           <Routes>
             <Route path="/" element={<Home />} />
