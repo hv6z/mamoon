@@ -112,7 +112,7 @@ export default function KidDetail() {
           {d.vouchers.length === 0 && <Empty>Chưa đổi voucher.</Empty>}
           {d.vouchers.map((v) => (
             <div key={v.id} className={`box ${v.status === 'unused' ? 'tint-pink' : 'tint-mint'}`}>
-              <b>{v.name}</b><div className="small">{v.code} · {v.status === 'unused' ? `Chưa dùng, hạn ${fmtDate(v.expiresAt)}` : 'Đã dùng'}</div>
+              <b>{v.name}</b><div className="small">{v.code} · {v.status === 'unused' ? `Chưa dùng, hạn ${fmtDate(v.expiresAt)}` : v.status === 'expired' ? `Hết hạn từ ${fmtDate(v.expiresAt)}` : 'Đã dùng'}</div>
             </div>
           ))}
         </section>

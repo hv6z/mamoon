@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import * as api from './api.js';
-import { resetDb, loadDb } from './storage.js';
+import { resetDb, loadDb, transact } from './storage.js';
+
+const saveDbWith = (fn) => transact((db) => { fn(db); });
 
 const admin = { role: 'admin', id: 'a1', name: 'Cô Dung' };
 const IMG = 'data:image/jpeg;base64,AAAA';
@@ -220,5 +222,12 @@ describe('tải ảnh điểm danh bù cho bé đã check-in', () => {
     const other = loadDb().kids.find((k) => k.classId !== s.session.classId && !s.rows.some((r) => r.kid.id === k.id));
     const r = api.makeupCheckIn(admin, { sessionId: s.session.id, kidId: other.id, evidence: IMG, evidenceType: 'sheet', reason: 'forgot' });
     expect(r.attendance.makeup).toBe(true);
+  });
+
+  it('hồ sơ bé hiện voucher quá hạn là "expired"', () => {
+    const k1 = api.getKidDetail(admin, 'k1');
+    expect(k1.vouchers.every((v) => v.status !== 'expired' || new Date(v.expiresAt) < new Date())).toBe(true);
+    saveDbWith((db) => db.vouchers.push({ id: 'vx', kidId: 'k1', rewardId: 'r1', name: 'Cũ', code: 'X', status: 'unused', createdAt: '2026-01-01T00:00:00Z', expiresAt: '2026-01-31T00:00:00Z' }));
+    expect(api.getKidDetail(admin, 'k1').vouchers.find((v) => v.id === 'vx').status).toBe('expired');
   });
 });

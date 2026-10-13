@@ -5,7 +5,8 @@ import * as api from '../../services/api.js';
 import { Coin, Icon } from '../../components/Icons.jsx';
 import { Modal, Progress, useLoad, useAction, fmtDate, fmtNum, Empty } from '../../components/ui.jsx';
 
-const STATUS = { unused: ['Chưa dùng', 'mint'], used: ['Đã dùng', 'sky'], expired: ['Hết hạn', 'danger'] };
+// Màu theo brand: còn dùng được = teal, đã dùng = trung tính, hết hạn = hồng
+const STATUS = { unused: ['Chưa dùng', 'ok'], used: ['Đã dùng', 'neutral'], expired: ['Hết hạn', 'alert'] };
 
 export default function Rewards() {
   const { session } = useAuth();
@@ -61,7 +62,7 @@ export default function Rewards() {
               <div className="small muted">Đổi ngày {fmtDate(v.createdAt)} · Hạn {fmtDate(v.expiresAt)}</div>
             </div>
             <span className="chip" style={{ fontFamily: 'monospace', fontSize: 16 }}>{v.code}</span>
-            <span className={`chip flat ${STATUS[v.status][1]}`}>{STATUS[v.status][0]}</span>
+            <span className={`chip ${STATUS[v.status][1]}`}>{STATUS[v.status][0]}</span>
           </div>
         ))}
         <p className="small muted">Đưa mã voucher cho nhân viên MaMoon khi nhận quà.</p>

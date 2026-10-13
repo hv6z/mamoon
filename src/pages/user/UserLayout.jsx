@@ -18,7 +18,7 @@ export default function UserLayout() {
   const nav = useNavigate();
   const [tick, setTick] = useState(0);
   const refresh = () => setTick((t) => t + 1);
-  const [sum] = useLoad(() => api.getKidSummary(session, session.kidId), [session.kidId, tick]);
+  const [sum, , loadErr] = useLoad(() => api.getKidSummary(session, session.kidId), [session.kidId, tick]);
   const kid = sum?.kid;
   return (
     <div className="user-shell">
@@ -40,7 +40,13 @@ export default function UserLayout() {
           </div>
         </header>
         <main>
-          <Outlet context={{ summary: sum, refresh }} />
+          {loadErr ? (
+            <div className="card stack" role="alert" style={{ maxWidth: 560, margin: '40px auto' }}>
+              <h1 style={{ fontSize: 28 }}>Không tải được thông tin của bé</h1>
+              <p>{loadErr.message}</p>
+              <button type="button" className="btn primary" onClick={() => { logout(); nav('/login'); }}>Đăng nhập lại</button>
+            </div>
+          ) : <Outlet context={{ summary: sum, refresh }} />}
         </main>
       </div>
       <nav className="bottomnav" aria-label="Menu chính">

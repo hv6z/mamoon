@@ -525,7 +525,7 @@ export function getKidDetail(actor, kidId) {
     rank: lb.all.find((r) => r.kidId === kidId)?.rank || null,
     paintings: getPaintings(actor, kidId),
     ledger: db.ledger.filter((e) => e.kidId === kidId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
-    vouchers: db.vouchers.filter((v) => v.kidId === kidId),
+    vouchers: db.vouchers.filter((v) => v.kidId === kidId).map((v) => ({ ...v, status: v.status === 'unused' && new Date(v.expiresAt).getTime() < Date.now() ? 'expired' : v.status })),
     makeups: attended.filter((a) => a.makeup).map((a) => ({ ...a, sessionLabel: sessionLabel(db, db.sessions.find((s) => s.id === a.sessionId)) })),
   };
 }

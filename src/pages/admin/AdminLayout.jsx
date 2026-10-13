@@ -5,6 +5,7 @@ import * as api from '../../services/api.js';
 import * as queue from '../../services/offlineQueue.js';
 import { Duck, Icon } from '../../components/Icons.jsx';
 import { useToast } from '../../components/ui.jsx';
+import { DEMO_MODE } from '../../config/env.js';
 
 export default function AdminLayout() {
   const { session, logout } = useAuth();
@@ -76,10 +77,12 @@ export default function AdminLayout() {
               <l.icon size={20} />{l.label}{l.count > 0 && <span className="badge" aria-label={`${l.count} chưa xử lý`}>{l.count}</span>}
             </NavLink>
           ))}
-          <div className="box tint-mint" style={{ marginTop: 12 }}>
-            <label className="switch"><input type="checkbox" checked={offline} onChange={toggleOffline} />Giả lập mất mạng</label>
-            <div className="small muted" style={{ marginTop: 4 }}>Dùng để thử lưu tạm khi lớp mất mạng.</div>
-          </div>
+          {DEMO_MODE && (
+            <div className="box tint-mint" style={{ marginTop: 12 }}>
+              <label className="switch"><input type="checkbox" checked={offline} onChange={toggleOffline} />Giả lập mất mạng</label>
+              <div className="small muted" style={{ marginTop: 4 }}>Dùng để thử lưu tạm khi lớp mất mạng.</div>
+            </div>
+          )}
           <div className="row tint-mint" style={{ marginTop: 10, padding: 12, borderRadius: 18, flexWrap: 'nowrap' }}>
             <span className="kid-face" style={{ background: 'var(--mm-pink-50)' }}>{session.name.split(' ').pop()[0]}</span>
             <div style={{ flex: 1, minWidth: 0 }}><div style={{ fontWeight: 800 }}>{session.name}</div><div className="small muted">Admin</div></div>
