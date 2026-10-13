@@ -1,0 +1,18 @@
+# Thư viện và bản build
+node_modules/
+dist/
+dist-single/
+coverage/
+
+# Biến môi trường (không đưa lên GitHub)
+.env
+.env.*
+!.env.example
+
+# File hệ thống / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.log
